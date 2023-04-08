@@ -66,6 +66,12 @@ function startGame(){
     countDownTimerId = setInterval(countDown, 1000)
 }
 
-alert('Whack-A-Monty Mole\n\nAre You Ready?')
-startGame();
+
+if(confirm('Whack-A-Monty Mole\n\nAre You Ready?') == true){
+    startGame();
+} else {
+    document.getElementById('grid').innerHTML = "<div style='width:100%;text-align:center;font-size:48px'>Refresh Page to Play!</div>"
+
+}
+
 

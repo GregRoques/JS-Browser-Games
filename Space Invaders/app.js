@@ -51,6 +51,7 @@ function play(){
   // move player
   function moveShooter(e) {
     squares[currentShooterIndex].classList.remove('shooter')
+    if(squares[currentShooterIndex].classList.contains('invader', 'shooter')) return;
     switch(e.key) {
       case 'ArrowLeft':
         if (currentShooterIndex % width !== 0) currentShooterIndex -=1
@@ -179,5 +180,10 @@ function play(){
   document.addEventListener('keydown', shoot)
 }
 
-alert('Space Invaders\n\nStart Game?')
-play();
+if(confirm('Space Invaders\n\nStart Game?') == true){
+    play();
+} else {
+  grid.innerHTML = "<div style='width:100%;text-align:center;font-size:48px'>Refresh Page to Start Again!ß</div>"
+}
+
+
