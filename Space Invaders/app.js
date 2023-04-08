@@ -141,6 +141,9 @@ function play(){
     function playAgain(msg){
       const gameOverText = `${msg.toUpperCase()}\nYour final score is: ${results}\n\nPlay Again?`;
       if(confirm(gameOverText) == true){
+        grid.innerHTML = "";
+        results = 0
+        resultsDisplay.innerText = `Score: ${results}`
           play();
       } else {
         grid.innerHTML = "<div style='width:100%;text-align:center;font-size:48px'>Thanks for Playing!</div>"
