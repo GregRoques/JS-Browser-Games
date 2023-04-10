@@ -51,7 +51,12 @@ function play(){
   // move player
   function moveShooter(e) {
     squares[currentShooterIndex].classList.remove('shooter')
-    if(squares[currentShooterIndex].classList.contains('invader', 'shooter')) return;
+    if(squares[currentShooterIndex].classList.contains('invader', 'shooter')){
+      squares[currentShooterIndex].classList.remove('invader')
+      squares[currentShooterIndex].classList.add('boom')
+      setTimeout(()=> squares[currentShooterIndex].classList.remove('boom'), 300)
+      return;
+    } 
     switch(e.key) {
       case 'ArrowLeft':
         if (currentShooterIndex % width !== 0) currentShooterIndex -=1
@@ -62,6 +67,9 @@ function play(){
     }
     squares[currentShooterIndex].classList.add('shooter')
   }
+
+    // add player keydown listener
+    document.addEventListener('keydown', moveShooter)
 
   // player shoot
   function shoot(e) {
@@ -95,8 +103,8 @@ function play(){
       }
     }
 
-  // add player keydown listener
-  document.addEventListener('keydown', moveShooter)
+    document.addEventListener('keydown', shoot)
+
 
   // ======================================================== Invader Actions
 
@@ -140,11 +148,15 @@ function play(){
 
     // Continue Message
     function playAgain(msg){
+      // stop game
+      clearInterval(invadersId)
+      document.removeEventListener('keydown', moveShooter)
+      document.removeEventListener('keydown', shoot)
+
+      // game over screen
       const gameOverText = `${msg.toUpperCase()}\nYour final score is: ${results}\n\nPlay Again?`;
       if(confirm(gameOverText) == true){
         grid.innerHTML = "";
-        results = 0
-        resultsDisplay.innerText = `Score: ${results}`
           play();
       } else {
         grid.innerHTML = "<div style='width:100%;text-align:center;font-size:48px'>Thanks for Playing!</div>"
@@ -155,29 +167,22 @@ function play(){
 
     // if aliens catch player... game over
     if (squares[currentShooterIndex].classList.contains('invader', 'shooter')) {
-      clearInterval(invadersId)
       playAgain('GAME OVER');
     }
 
     // if aliens reach the ground... game over
     for (let i = 0; i < alienInvaders.length; i++) {
       if(alienInvaders[i] > (squares.length)) {
-        clearInterval(invadersId)
         playAgain('GAME OVER');
       }
     }
 
     // if all aliens are gone... you win, and game over.
     if (aliensRemoved.length === alienInvaders.length) {
-      clearInterval(invadersId)
       playAgain('YOU WIN');
     }
   }
-
-
   invadersId = setInterval(moveInvaders, 600)
-
-  document.addEventListener('keydown', shoot)
 }
 
 if(confirm('Space Invaders\n\nStart Game?') == true){
